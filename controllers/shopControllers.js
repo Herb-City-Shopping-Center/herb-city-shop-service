@@ -52,6 +52,37 @@ const registerShop = asyncHandler(async (req, res) => {
   }
 });
 
+const getShopByUserId = asyncHandler(async (req, res) => {
+  const { userId} =req.body;
+
+  if (!userId) {
+    res.send(400);
+    throw new error("Please add user Id!!!");
+  }
+
+  const shop = await Shop.findOne({ userId });
+
+  
+  if (shop) {
+    console.log("Found!!!".green.bold);
+    res.status(201).json({
+      _id: shop._id,
+      userId: shop.userId,
+      shopName: shop.shopName,
+      shopDescription: shop.shopDescription,
+      shopAddress: shop.shopAddress,
+      ratings: shop.ratings,
+      shopImage: shop.shopImage,
+    });
+  } else {
+    console.log("Failed to Get Shop !!!".red.bold);
+    res.status(400).json({
+      error: "Failed to Get Shop !!!",
+    });
+    throw new error("Failed to Get Shop !!!");
+  }
+});
+
 
 
 
@@ -61,5 +92,6 @@ const registerShop = asyncHandler(async (req, res) => {
 
 module.exports = {
   registerShop,
+  getShopByUserId,
 
 };
