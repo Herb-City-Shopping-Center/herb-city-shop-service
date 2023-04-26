@@ -83,6 +83,23 @@ const getShopByUserId = asyncHandler(async (req, res) => {
   }
 });
 
+const getProductsByShopId = asyncHandler(async(req,res)=>{
+
+  const { shopId } = req.body;
+  console.log(shopId + " shop Id");
+  const product = await Product.find({ shopId: { $in: shopId } });
+
+  if (product) {
+    res.send(product);
+    console.log(product);
+  } else {
+    console.log("Invalid shopId for fetch product".red.bold);
+    res.status(401);
+    throw new error("Invalid shopId for fetch product");
+  }
+
+});
+
 
 
 
@@ -93,5 +110,6 @@ const getShopByUserId = asyncHandler(async (req, res) => {
 module.exports = {
   registerShop,
   getShopByUserId,
+  getProductsByShopId,
 
 };
