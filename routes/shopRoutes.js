@@ -6,8 +6,7 @@ const {
   getProductsByShopId,
   updateProduct,
   deleteProduct,
-  // updateShop,
-  // deleteShop,
+  getOrdersByShopId,
 } = require("../controllers/shopControllers");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -18,5 +17,6 @@ router.route("/getShopByUserId").post(getShopByUserId);
 router.route("/getProductsByShopId").post(getProductsByShopId);
 router.route("/deleteProduct").post(deleteProduct);
 router.route("/updateProduct").post(updateProduct);
+router.route("/getOrdersByShopId").post(getOrdersByShopId);
 
 module.exports = router;
