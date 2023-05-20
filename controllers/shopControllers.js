@@ -12,7 +12,7 @@ const registerShop = asyncHandler(async (req, res) => {
   console.log(userId, shopName, shopDescription, shopAddress, shopImage);
 
   if (!userId || !shopName || !shopDescription || !shopAddress || !shopImage) {
-    res.send(400);
+    res.sendStatus(400);
     throw new error("Please enter all the fields!!!");
   }
 
@@ -20,7 +20,7 @@ const registerShop = asyncHandler(async (req, res) => {
 
   if (shopExist) {
     console.log("Shop already exist!!!".red.bold);
-    res.status(400).json({
+    res.sendStatus(400).json({
       error: "Shop already exist !!!",
     });
     throw new error("Shop already exist!!!");
@@ -46,7 +46,7 @@ const registerShop = asyncHandler(async (req, res) => {
     });
   } else {
     console.log("Failed to Register Shop !!!".red.bold);
-    res.status(400).json({
+    res.sendStatus(400).json({
       error: "Failed to Register Shop !!!",
     });
     throw new error("Failed to Register Shop !!!");
@@ -55,6 +55,8 @@ const registerShop = asyncHandler(async (req, res) => {
 
 const getShopByUserId = asyncHandler(async (req, res) => {
   const { userId } = req.body;
+
+  console.log("get shop : "+userId);
 
   if (!userId) {
     res.send(400);
@@ -211,11 +213,71 @@ console.log(order);
   }
 });
 
+const addProduct = asyncHandler(async (req, res) => {
+    const {
+    productTitle,
+    categoryName,
+    description,
+    stock,
+    shopId,
+    pic,
+    price,
+    } = req.body;
+  
+   
+  
+    if (
+
+            !productTitle ||
+            !categoryName ||
+            !description ||
+            !stock ||
+            !shopId ||
+            !pic ||
+            !price 
+      
+    ) {
+      res.send(400);
+      throw new error("Please enter all the fields!!!");
+    }
+  
+   
+  
+    const product = await Product.create({
+        productTitle,
+    categoryName,
+    description,
+    stock,
+    shopId,
+    pic,
+    price,
+    });
+  
+   
+  
+    if (product) {
+      console.log("Product Added!!!".green.bold);
+      res.status(201).json({
+        product
+      });
+    } else {
+      console.log("Failed to adding product !!!".red.bold);
+      res.status(400).json({
+        error: "Failed to adding product !!!",
+      });
+      throw new error("Failed to adding product !!!");
+    }
+  });
+
+
+
 module.exports = {
   registerShop,
   getShopByUserId,
   getProductsByShopId,
   deleteProduct,
   updateProduct,
+  getOrdersByShopId,
+  addProduct,
   getOrdersByShopId,
 };
